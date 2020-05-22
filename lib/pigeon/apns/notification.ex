@@ -228,6 +228,13 @@ defmodule Pigeon.APNS.Notification do
   def put_category(notification, category),
     do: update_payload(notification, "category", category)
 
+  def put_push_type(notification, push_type),
+    do: update_notification(notification, :push_type, push_type)
+  def put_expiration(notification, expiration),
+    do: update_notification(notification, :expiration, expiration)
+  def put_priority(notification, priority),
+    do: update_notification(notification, :priority, priority)
+
   @doc """
   Sets `"mutable-content"` flag in push payload.
 
@@ -259,6 +266,10 @@ defmodule Pigeon.APNS.Notification do
 
     new_payload = notification.payload |> Map.put("aps", new_aps)
     %{notification | payload: new_payload}
+  end
+
+  defp update_notification(notification, key, value) do
+    %{notification | key => value}
   end
 
   @doc """
