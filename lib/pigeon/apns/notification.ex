@@ -59,6 +59,34 @@ defmodule Pigeon.APNS.Notification do
   Returns an `APNS.Notification` struct with given message, device token, and
   topic (optional).
 
+  Push payload is constructed in the form of `%{"aps" => %{}}`
+
+  ## Examples
+
+      iex> Pigeon.APNS.Notification.new("device token")
+      %Pigeon.APNS.Notification{
+        device_token: "device token",
+        expiration: nil,
+        priority: nil,
+        push_type: "alert",
+        id: nil,
+        payload: %{"aps" => %{}},
+        topic: nil
+      }
+  """
+  @spec new(String.t(), String.t()) :: t
+  def new(token, topic) do
+    %Notification{
+      device_token: token,
+      payload: %{"aps" => %{}},
+      topic: topic
+    }
+  end
+
+  @doc """
+  Returns an `APNS.Notification` struct with given message, device token, and
+  topic (optional).
+
   Push payload is constructed in the form of `%{"aps" => %{"alert" => msg}}`
 
   ## Examples
@@ -74,8 +102,8 @@ defmodule Pigeon.APNS.Notification do
         topic: nil
       }
   """
-  @spec new(String.t() | map, String.t(), String.t() | nil) :: t
-  def new(msg, token, topic \\ nil) do
+  @spec new(String.t() | map, String.t(), String.t()) :: t
+  def new(msg, token, topic) do
     %Notification{
       device_token: token,
       payload: %{"aps" => %{"alert" => msg}},
